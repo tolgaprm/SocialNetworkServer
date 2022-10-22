@@ -3,6 +3,8 @@ package com.prmcoding.di
 
 import com.prmcoding.data.repository.follow.FollowRepository
 import com.prmcoding.data.repository.follow.FollowRepositoryImpl
+import com.prmcoding.data.repository.post.PostRepository
+import com.prmcoding.data.repository.post.PostRepositoryImpl
 import com.prmcoding.data.repository.user.UserRepository
 import com.prmcoding.data.repository.user.UserRepositoryImpl
 import com.prmcoding.util.Constants.DATABASE_NAME
@@ -23,6 +25,10 @@ val mainModule = module {
 
     single<FollowRepository> {
         FollowRepositoryImpl(get())
+    }
+
+    single<PostRepository> {
+        PostRepositoryImpl(get())
     }
 
 }
