@@ -1,8 +1,8 @@
 package com.prmcoding.di
 
 
-import com.prmcoding.controller.user.UserController
-import com.prmcoding.controller.user.UserControllerImpl
+import com.prmcoding.data.repository.user.UserRepository
+import com.prmcoding.data.repository.user.UserRepositoryImpl
 import com.prmcoding.util.Constants.DATABASE_NAME
 import org.koin.dsl.module
 import org.litote.kmongo.coroutine.coroutine
@@ -15,7 +15,8 @@ val mainModule = module {
         client.getDatabase(DATABASE_NAME)
     }
 
-    single<UserController> {
-        UserControllerImpl(get())
+    single<UserRepository> {
+        UserRepositoryImpl(get())
     }
+
 }
