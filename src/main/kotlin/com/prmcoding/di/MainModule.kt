@@ -1,6 +1,8 @@
 package com.prmcoding.di
 
 
+import com.prmcoding.data.repository.follow.FollowRepository
+import com.prmcoding.data.repository.follow.FollowRepositoryImpl
 import com.prmcoding.data.repository.user.UserRepository
 import com.prmcoding.data.repository.user.UserRepositoryImpl
 import com.prmcoding.util.Constants.DATABASE_NAME
@@ -17,6 +19,10 @@ val mainModule = module {
 
     single<UserRepository> {
         UserRepositoryImpl(get())
+    }
+
+    single<FollowRepository> {
+        FollowRepositoryImpl(get())
     }
 
 }
