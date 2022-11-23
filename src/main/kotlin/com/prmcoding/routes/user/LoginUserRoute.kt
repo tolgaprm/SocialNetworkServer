@@ -1,8 +1,8 @@
 package com.prmcoding.routes.user
 
-import com.prmcoding.data.repository.user.UserRepository
 import com.prmcoding.data.requests.LoginRequest
 import com.prmcoding.responses.BasicApiResponse
+import com.prmcoding.service.UserService
 import com.prmcoding.util.ApiResponseMessages.INVALID_CREDENTIALS
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -10,7 +10,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.loginUserRoute(userRepository: UserRepository) {
+fun Route.loginUserRoute(userService: UserService) {
 
     post("/api/user/login") {
         val request = kotlin.runCatching { call.receiveNullable<LoginRequest>() }.getOrNull() ?: kotlin.run {
@@ -18,15 +18,12 @@ fun Route.loginUserRoute(userRepository: UserRepository) {
             return@post
         }
 
-        if (request.email.isBlank() || request.password.isBlank()) {
+        if (userService.validateLoginRequest(request = request) == UserService.ValidationEvent.ErrorFieldEmpty) {
             call.respond(HttpStatusCode.BadRequest)
             return@post
         }
 
-        val isCorrectPassword = userRepository.doesPasswordForUserMatch(
-            email = request.email,
-            enteredPassword = request.password
-        )
+        val isCorrectPassword = userService.doesPasswordForUserMatch(request = request)
 
         if (isCorrectPassword) {
             call.respond(
@@ -35,7 +32,7 @@ fun Route.loginUserRoute(userRepository: UserRepository) {
                     successful = true
                 )
             )
-        }else{
+        } else {
             call.respond(
                 status = HttpStatusCode.OK,
                 message = BasicApiResponse(

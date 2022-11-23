@@ -1,8 +1,8 @@
 package com.prmcoding.routes.follow
 
-import com.prmcoding.data.repository.follow.FollowRepository
 import com.prmcoding.data.requests.FollowUpdateRequest
 import com.prmcoding.responses.BasicApiResponse
+import com.prmcoding.service.FollowService
 import com.prmcoding.util.ApiResponseMessages
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -11,19 +11,15 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.unFollowUserRoute(
-    followRepository: FollowRepository
+    followService: FollowService
 ) {
-
     delete("/api/following/unfollow") {
         val request = kotlin.runCatching { call.receiveNullable<FollowUpdateRequest>() }.getOrNull() ?: kotlin.run {
             call.respond(HttpStatusCode.BadRequest)
             return@delete
         }
 
-        val didUserExist = followRepository.unFollowUserIfExists(
-            followingUserId = request.followingUserId,
-            followedUserId = request.followedUserId
-        )
+        val didUserExist = followService.unFollowUserIfExists(request = request)
 
         if (didUserExist) {
             call.respond(

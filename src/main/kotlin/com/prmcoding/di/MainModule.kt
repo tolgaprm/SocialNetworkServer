@@ -7,6 +7,9 @@ import com.prmcoding.data.repository.post.PostRepository
 import com.prmcoding.data.repository.post.PostRepositoryImpl
 import com.prmcoding.data.repository.user.UserRepository
 import com.prmcoding.data.repository.user.UserRepositoryImpl
+import com.prmcoding.service.FollowService
+import com.prmcoding.service.PostService
+import com.prmcoding.service.UserService
 import com.prmcoding.util.Constants.DATABASE_NAME
 import org.koin.dsl.module
 import org.litote.kmongo.coroutine.coroutine
@@ -29,6 +32,18 @@ val mainModule = module {
 
     single<PostRepository> {
         PostRepositoryImpl(get())
+    }
+
+    single {
+        UserService(get())
+    }
+
+    single {
+        FollowService(get())
+    }
+
+    single {
+        PostService(get())
     }
 
 }
