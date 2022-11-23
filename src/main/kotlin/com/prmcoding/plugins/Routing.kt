@@ -17,17 +17,30 @@ fun Application.configureRouting() {
     val followService: FollowService by inject()
     val postService: PostService by inject()
 
+
+    val jwtIssuer = environment.config.property("jwt.domain").getString()
+    val jwtAudience = environment.config.property("jwt.audience").getString()
+    val jwtSecret = environment.config.property("jwt.secret").getString()
+
     routing {
         // User Routes
         createUserRoute(userService = userService)
-        loginUserRoute(userService = userService)
+        loginUserRoute(
+            userService = userService,
+            jwtAudience = jwtAudience,
+            jwtIssuer = jwtIssuer,
+            jwtSecret = jwtSecret,
+        )
 
         // Following Routes
         followUserRoute(followService = followService)
         unFollowUserRoute(followService = followService)
 
         // Post Routes
-        createPostRoute(postService = postService)
+        createPostRoute(
+            postService = postService,
+            userService = userService
+        )
 
     }
 }

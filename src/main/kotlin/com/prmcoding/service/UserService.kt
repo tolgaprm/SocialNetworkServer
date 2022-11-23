@@ -36,6 +36,12 @@ class UserService(
         )
     }
 
+    suspend fun doesEmailBelongsToUserId(userId: String, email: String): Boolean {
+        return repository.doesEmailBelongToUserId(
+            email = email,
+            userId = userId
+        )
+    }
 
     fun validateLoginRequest(request: LoginRequest): ValidationEvent {
         if (request.email.isBlank() || request.password.isBlank()) {
