@@ -11,7 +11,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.getPostForFollows(
+fun Route.getPostForFollowsRoute(
     postService: PostService,
     userService: UserService
 ) {

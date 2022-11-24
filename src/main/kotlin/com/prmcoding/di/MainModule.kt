@@ -3,11 +3,14 @@ package com.prmcoding.di
 
 import com.prmcoding.data.repository.follow.FollowRepository
 import com.prmcoding.data.repository.follow.FollowRepositoryImpl
+import com.prmcoding.data.repository.likes.LikeRepository
+import com.prmcoding.data.repository.likes.LikesRepositoryImpl
 import com.prmcoding.data.repository.post.PostRepository
 import com.prmcoding.data.repository.post.PostRepositoryImpl
 import com.prmcoding.data.repository.user.UserRepository
 import com.prmcoding.data.repository.user.UserRepositoryImpl
 import com.prmcoding.service.FollowService
+import com.prmcoding.service.LikeService
 import com.prmcoding.service.PostService
 import com.prmcoding.service.UserService
 import com.prmcoding.util.Constants.DATABASE_NAME
@@ -34,16 +37,14 @@ val mainModule = module {
         PostRepositoryImpl(get())
     }
 
-    single {
-        UserService(get())
+    single<LikeRepository> {
+        LikesRepositoryImpl(get())
     }
 
-    single {
-        FollowService(get())
-    }
+    single { UserService(get()) }
+    single { FollowService(get()) }
+    single { PostService(get()) }
+    single { LikeService(get()) }
 
-    single {
-        PostService(get())
-    }
 
 }

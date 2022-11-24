@@ -2,11 +2,15 @@ package com.prmcoding.plugins
 
 import com.prmcoding.routes.follow.followUserRoute
 import com.prmcoding.routes.follow.unFollowUserRoute
+import com.prmcoding.routes.likes.likeParentRoute
+import com.prmcoding.routes.likes.unlikeParentRoute
 import com.prmcoding.routes.post.createPostRoute
-import com.prmcoding.routes.post.getPostForFollows
+import com.prmcoding.routes.post.deletePostRoute
+import com.prmcoding.routes.post.getPostForFollowsRoute
 import com.prmcoding.routes.user.createUserRoute
 import com.prmcoding.routes.user.loginUserRoute
 import com.prmcoding.service.FollowService
+import com.prmcoding.service.LikeService
 import com.prmcoding.service.PostService
 import com.prmcoding.service.UserService
 import io.ktor.server.application.*
@@ -17,7 +21,7 @@ fun Application.configureRouting() {
     val userService: UserService by inject()
     val followService: FollowService by inject()
     val postService: PostService by inject()
-
+    val likeService: LikeService by inject()
 
     val jwtIssuer = environment.config.property("jwt.domain").getString()
     val jwtAudience = environment.config.property("jwt.audience").getString()
@@ -38,15 +42,13 @@ fun Application.configureRouting() {
         unFollowUserRoute(followService = followService)
 
         // Post Routes
-        createPostRoute(
-            postService = postService,
-            userService = userService
-        )
+        createPostRoute(postService = postService, userService = userService)
+        getPostForFollowsRoute(postService = postService, userService = userService)
+        deletePostRoute(postService = postService, userService = userService, likeService = likeService)
 
-        getPostForFollows(
-            postService = postService,
-            userService = userService
-        )
+        // Like Routes
+        likeParentRoute(likeService = likeService, userService = userService)
+        unlikeParentRoute(likeService = likeService, userService = userService)
 
     }
 }
