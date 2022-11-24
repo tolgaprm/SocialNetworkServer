@@ -36,7 +36,7 @@ class UserService(
         )
     }
 
-    suspend fun doesEmailBelongsToUserId(userId: String, email: String): Boolean {
+    suspend fun doesEmailBelongsToUserId(email: String, userId: String): Boolean {
         return repository.doesEmailBelongToUserId(
             email = email,
             userId = userId

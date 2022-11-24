@@ -6,5 +6,6 @@ object ApiResponseMessages {
     const val FIELDS_BLANK = "The fields is not be empty"
     const val INVALID_CREDENTIALS = "Opps! that is not correct, please try again."
     const val USER_NOT_FOUND = "The user couldn't be found. "
+    const val COMMENT_TOO_LONG = "The comment length must not exceed ${Constants.MAX_COMMENT_LENGTH} characters."
 
 }

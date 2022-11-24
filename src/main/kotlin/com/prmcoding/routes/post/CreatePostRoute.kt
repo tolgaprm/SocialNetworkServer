@@ -2,10 +2,10 @@ package com.prmcoding.routes.post
 
 import com.prmcoding.data.requests.CreatePostRequest
 import com.prmcoding.responses.BasicApiResponse
+import com.prmcoding.routes.ifEmailBelongToUserId
 import com.prmcoding.service.PostService
 import com.prmcoding.service.UserService
 import com.prmcoding.util.ApiResponseMessages.USER_NOT_FOUND
-import com.prmcoding.util.ifEmailBelongToUserId
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*

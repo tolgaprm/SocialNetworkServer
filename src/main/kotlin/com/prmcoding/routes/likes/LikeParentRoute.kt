@@ -2,10 +2,10 @@ package com.prmcoding.routes.likes
 
 import com.prmcoding.data.requests.LikeUpdateRequest
 import com.prmcoding.responses.BasicApiResponse
+import com.prmcoding.routes.ifEmailBelongToUserId
 import com.prmcoding.service.LikeService
 import com.prmcoding.service.UserService
 import com.prmcoding.util.ApiResponseMessages
-import com.prmcoding.util.ifEmailBelongToUserId
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*

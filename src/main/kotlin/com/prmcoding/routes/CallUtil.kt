@@ -1,4 +1,4 @@
-package com.prmcoding.util
+package com.prmcoding.routes
 
 import com.prmcoding.plugins.email
 import io.ktor.http.*
@@ -9,8 +9,8 @@ import io.ktor.server.response.*
 import io.ktor.util.pipeline.*
 
 /**
- Here we get the email which I saved email in JWT(token) when user login
-  */
+Here we get the email which I saved email in JWT(token) when user login
+ */
 suspend fun PipelineContext<Unit, ApplicationCall>.ifEmailBelongToUserId(
     userId: String,
     validateEmail: suspend (email: String, userId: String) -> Boolean,

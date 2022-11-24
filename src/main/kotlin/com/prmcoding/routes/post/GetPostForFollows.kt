@@ -1,10 +1,10 @@
 package com.prmcoding.routes.post
 
+import com.prmcoding.routes.ifEmailBelongToUserId
 import com.prmcoding.service.PostService
 import com.prmcoding.service.UserService
 import com.prmcoding.util.Constants
 import com.prmcoding.util.QueryParameters
-import com.prmcoding.util.ifEmailBelongToUserId
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
