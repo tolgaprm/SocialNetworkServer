@@ -3,6 +3,7 @@ package com.prmcoding.plugins
 import com.prmcoding.routes.follow.followUserRoute
 import com.prmcoding.routes.follow.unFollowUserRoute
 import com.prmcoding.routes.post.createPostRoute
+import com.prmcoding.routes.post.getPostForFollows
 import com.prmcoding.routes.user.createUserRoute
 import com.prmcoding.routes.user.loginUserRoute
 import com.prmcoding.service.FollowService
@@ -38,6 +39,11 @@ fun Application.configureRouting() {
 
         // Post Routes
         createPostRoute(
+            postService = postService,
+            userService = userService
+        )
+
+        getPostForFollows(
             postService = postService,
             userService = userService
         )

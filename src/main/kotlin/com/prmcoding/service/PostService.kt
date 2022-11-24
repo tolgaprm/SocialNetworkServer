@@ -3,6 +3,7 @@ package com.prmcoding.service
 import com.prmcoding.data.models.Post
 import com.prmcoding.data.repository.post.PostRepository
 import com.prmcoding.data.requests.CreatePostRequest
+import com.prmcoding.util.Constants
 
 class PostService(
     private val postRepository: PostRepository
@@ -16,6 +17,18 @@ class PostService(
                 timestamp = System.currentTimeMillis(),
                 description = request.description
             )
+        )
+    }
+
+    suspend fun getPostsForFollows(
+        userId: String,
+        page: Int = 0,
+        pageSize: Int = Constants.DEFAULT_POST_PAGE_SIZE
+    ): List<Post> {
+        return postRepository.getPostsByFollows(
+            userId = userId,
+            page = page,
+            pageSize = pageSize
         )
     }
 }
