@@ -2,9 +2,8 @@ package com.prmcoding.routes.post
 
 import com.prmcoding.data.requests.CreatePostRequest
 import com.prmcoding.responses.BasicApiResponse
-import com.prmcoding.routes.ifEmailBelongToUserId
+import com.prmcoding.routes.userId
 import com.prmcoding.service.PostService
-import com.prmcoding.service.UserService
 import com.prmcoding.util.ApiResponseMessages.USER_NOT_FOUND
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -14,8 +13,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.createPostRoute(
-    postService: PostService,
-    userService: UserService
+    postService: PostService
 ) {
 
     authenticate {
@@ -25,28 +23,24 @@ fun Route.createPostRoute(
                 return@post
             }
 
+            val userId = call.userId
 
-            ifEmailBelongToUserId(
-                userId = request.userId,
-                validateEmail = userService::doesEmailBelongsToUserId
-            ) {
-                val didUserExists = postService.createPostIfUserExists(request = request)
-                if (didUserExists) {
-                    call.respond(
-                        status = HttpStatusCode.OK,
-                        message = BasicApiResponse(
-                            successful = true
-                        )
+            val didUserExists = postService.createPostIfUserExists(request = request, userId = userId)
+            if (didUserExists) {
+                call.respond(
+                    status = HttpStatusCode.OK,
+                    message = BasicApiResponse(
+                        successful = true
                     )
-                } else {
-                    call.respond(
-                        status = HttpStatusCode.OK,
-                        message = BasicApiResponse(
-                            successful = true,
-                            message = USER_NOT_FOUND
-                        )
+                )
+            } else {
+                call.respond(
+                    status = HttpStatusCode.OK,
+                    message = BasicApiResponse(
+                        successful = true,
+                        message = USER_NOT_FOUND
                     )
-                }
+                )
             }
         }
     }

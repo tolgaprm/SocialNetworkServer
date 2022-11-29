@@ -2,9 +2,8 @@ package com.prmcoding.routes.comment
 
 import com.prmcoding.data.requests.CreateCommentRequest
 import com.prmcoding.responses.BasicApiResponse
-import com.prmcoding.routes.ifEmailBelongToUserId
+import com.prmcoding.routes.userId
 import com.prmcoding.service.CommentService
-import com.prmcoding.service.UserService
 import com.prmcoding.util.ApiResponseMessages
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -14,8 +13,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.createCommentRoute(
-    commentService: CommentService,
-    userService: UserService
+    commentService: CommentService
 ) {
     authenticate {
         post("/api/comment/create") {
@@ -25,37 +23,35 @@ fun Route.createCommentRoute(
                     return@post
                 }
 
-            ifEmailBelongToUserId(
-                userId = request.userId,
-                validateEmail = userService::doesEmailBelongsToUserId
-            ) {
-                when (commentService.createComment(request)) {
-                    is CommentService.ValidationEvent.ErrorFieldEmpty -> {
-                        call.respond(
-                            status = HttpStatusCode.OK,
-                            message = BasicApiResponse(
-                                successful = false,
-                                message = ApiResponseMessages.FIELDS_BLANK
-                            )
+            when (commentService.createComment(
+                createCommentRequest = request,
+                userId = call.userId
+            )) {
+                is CommentService.ValidationEvent.ErrorFieldEmpty -> {
+                    call.respond(
+                        status = HttpStatusCode.OK,
+                        message = BasicApiResponse(
+                            successful = false,
+                            message = ApiResponseMessages.FIELDS_BLANK
                         )
-                    }
-                    is CommentService.ValidationEvent.ErrorCommentTooLong -> {
-                        call.respond(
-                            status = HttpStatusCode.OK,
-                            message = BasicApiResponse(
-                                successful = false,
-                                message = ApiResponseMessages.COMMENT_TOO_LONG
-                            )
+                    )
+                }
+                is CommentService.ValidationEvent.ErrorCommentTooLong -> {
+                    call.respond(
+                        status = HttpStatusCode.OK,
+                        message = BasicApiResponse(
+                            successful = false,
+                            message = ApiResponseMessages.COMMENT_TOO_LONG
                         )
-                    }
-                    is CommentService.ValidationEvent.Success -> {
-                        call.respond(
-                            status = HttpStatusCode.OK,
-                            message = BasicApiResponse(
-                                successful = true
-                            )
+                    )
+                }
+                is CommentService.ValidationEvent.Success -> {
+                    call.respond(
+                        status = HttpStatusCode.OK,
+                        message = BasicApiResponse(
+                            successful = true
                         )
-                    }
+                    )
                 }
             }
         }

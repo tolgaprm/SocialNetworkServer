@@ -1,23 +1,28 @@
 package com.prmcoding.service
 
 import com.prmcoding.data.repository.follow.FollowRepository
-import com.prmcoding.data.requests.FollowUpdateRequest
 
 class FollowService(
     private val repository: FollowRepository
 ) {
 
-    suspend fun followUserIfExists(request: FollowUpdateRequest): Boolean {
+    suspend fun followUserIfExists(
+        followingUserId: String,
+        followedUserId: String
+    ): Boolean {
         return repository.followUserIfExists(
-            followingUserId = request.followingUserId,
-            followedUserId = request.followedUserId
+            followingUserId = followingUserId,
+            followedUserId = followedUserId
         )
     }
 
-    suspend fun unFollowUserIfExists(request: FollowUpdateRequest): Boolean {
+    suspend fun unFollowUserIfExists(
+        followingUserId: String,
+        followedUserId: String
+    ): Boolean {
         return repository.unFollowUserIfExists(
-            followingUserId = request.followingUserId,
-            followedUserId = request.followedUserId
+            followingUserId = followingUserId,
+            followedUserId = followedUserId
         )
     }
 }

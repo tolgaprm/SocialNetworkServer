@@ -36,6 +36,14 @@ class UserService(
         )
     }
 
+    suspend fun getUserByEmail(email: String): User? {
+        return repository.getUserByEmail(email)
+    }
+
+    fun isValidPassword(enteredPassword: String, actualPassword: String): Boolean {
+        return enteredPassword == actualPassword
+    }
+
     suspend fun doesEmailBelongsToUserId(email: String, userId: String): Boolean {
         return repository.doesEmailBelongToUserId(
             email = email,

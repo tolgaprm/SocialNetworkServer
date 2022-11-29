@@ -2,9 +2,8 @@ package com.prmcoding.routes.likes
 
 import com.prmcoding.data.requests.LikeUpdateRequest
 import com.prmcoding.responses.BasicApiResponse
-import com.prmcoding.routes.ifEmailBelongToUserId
+import com.prmcoding.routes.userId
 import com.prmcoding.service.LikeService
-import com.prmcoding.service.UserService
 import com.prmcoding.util.ApiResponseMessages
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -14,8 +13,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.likeParentRoute(
-    likeService: LikeService,
-    userService: UserService
+    likeService: LikeService
+
 ) {
     authenticate {
         post("/api/like") {
@@ -23,32 +22,27 @@ fun Route.likeParentRoute(
                 call.respond(HttpStatusCode.BadRequest)
                 return@post
             }
-
-            ifEmailBelongToUserId(
-                userId = request.userId,
-                validateEmail = userService::doesEmailBelongsToUserId
-            ) {
-                val likeSuccessful = likeService.likeParent(
-                    userId = request.userId,
-                    parentId = request.parentId
+            val likeSuccessful = likeService.likeParent(
+                userId = call.userId,
+                parentId = request.parentId
+            )
+            if (likeSuccessful) {
+                call.respond(
+                    status = HttpStatusCode.OK,
+                    message = BasicApiResponse(
+                        successful = true,
+                    )
                 )
-                if (likeSuccessful) {
-                    call.respond(
-                        status = HttpStatusCode.OK,
-                        message = BasicApiResponse(
-                            successful = true,
-                        )
+            } else {
+                call.respond(
+                    status = HttpStatusCode.OK,
+                    message = BasicApiResponse(
+                        successful = false,
+                        message = ApiResponseMessages.USER_NOT_FOUND
                     )
-                } else {
-                    call.respond(
-                        status = HttpStatusCode.OK,
-                        message = BasicApiResponse(
-                            successful = false,
-                            message = ApiResponseMessages.USER_NOT_FOUND
-                        )
-                    )
-                }
+                )
             }
+
         }
     }
 }

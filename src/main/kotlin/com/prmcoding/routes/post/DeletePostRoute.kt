@@ -1,11 +1,10 @@
 package com.prmcoding.routes.post
 
 import com.prmcoding.data.requests.DeletePostRequest
-import com.prmcoding.routes.ifEmailBelongToUserId
+import com.prmcoding.routes.userId
 import com.prmcoding.service.CommentService
 import com.prmcoding.service.LikeService
 import com.prmcoding.service.PostService
-import com.prmcoding.service.UserService
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -15,7 +14,6 @@ import io.ktor.server.routing.*
 
 fun Route.deletePostRoute(
     postService: PostService,
-    userService: UserService,
     likeService: LikeService,
     commentService: CommentService
 ) {
@@ -32,15 +30,15 @@ fun Route.deletePostRoute(
                 return@delete
             }
 
-            ifEmailBelongToUserId(
-                userId = post.userId,
-                validateEmail = userService::doesEmailBelongsToUserId
-            ) {
+            if (post.userId == call.userId) {
                 postService.deletePost(postId = request.postId)
                 likeService.deleteLikesForParent(parentId = request.postId)
                 commentService.deleteCommentsForParent(parentId = request.postId)
                 call.respond(HttpStatusCode.OK)
+            } else {
+                call.respond(HttpStatusCode.Unauthorized)
             }
+
         }
     }
 }

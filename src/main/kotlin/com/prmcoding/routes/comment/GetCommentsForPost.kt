@@ -20,7 +20,6 @@ fun Route.getCommentsForPostRoute(
 
             val comments = commentService.getCommentsForPost(postId = postId)
             call.respond(status = HttpStatusCode.OK, message = comments)
-
         }
     }
 }
