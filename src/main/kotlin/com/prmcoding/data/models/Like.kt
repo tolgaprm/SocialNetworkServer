@@ -8,5 +8,6 @@ data class Like(
     @BsonId
     val id: String = ObjectId().toString(),
     val userId: String,
+    val parentType: Int,
     val parentId: String
 )

@@ -1,5 +1,6 @@
 package com.prmcoding.plugins
 
+import com.prmcoding.routes.activity.getActivities
 import com.prmcoding.routes.comment.createCommentRoute
 import com.prmcoding.routes.comment.deleteCommentRoute
 import com.prmcoding.routes.comment.getCommentsForPostRoute
@@ -23,6 +24,7 @@ fun Application.configureRouting() {
     val postService: PostService by inject()
     val likeService: LikeService by inject()
     val commentService: CommentService by inject()
+    val activityService: ActivityService by inject()
 
     val jwtIssuer = environment.config.property("jwt.domain").getString()
     val jwtAudience = environment.config.property("jwt.audience").getString()
@@ -39,7 +41,7 @@ fun Application.configureRouting() {
         )
 
         // Following Routes
-        followUserRoute(followService = followService)
+        followUserRoute(followService = followService, activityService = activityService)
         unFollowUserRoute(followService = followService)
 
         // Post Routes
@@ -52,13 +54,15 @@ fun Application.configureRouting() {
         )
 
         // Like Routes
-        likeParentRoute(likeService = likeService)
+        likeParentRoute(likeService = likeService, activityService = activityService)
         unlikeParentRoute(likeService = likeService)
 
         // Comment Routes
-        createCommentRoute(commentService = commentService)
+        createCommentRoute(commentService = commentService, activityService = activityService)
         deleteCommentRoute(commentService = commentService, likeService = likeService)
         getCommentsForPostRoute(commentService = commentService)
 
+        // Activity Routes
+        getActivities(activityService = activityService)
     }
 }

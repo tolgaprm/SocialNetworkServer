@@ -1,6 +1,8 @@
 package com.prmcoding.di
 
 
+import com.prmcoding.data.repository.activity.ActivityRepository
+import com.prmcoding.data.repository.activity.ActivityRepositoryImpl
 import com.prmcoding.data.repository.comment.CommentRepository
 import com.prmcoding.data.repository.comment.CommentRepositoryImpl
 import com.prmcoding.data.repository.follow.FollowRepository
@@ -44,11 +46,16 @@ val mainModule = module {
         CommentRepositoryImpl(get())
     }
 
+    single<ActivityRepository> {
+        ActivityRepositoryImpl(get())
+    }
+
     single { UserService(get()) }
     single { FollowService(get()) }
     single { PostService(get()) }
     single { LikeService(get()) }
     single { CommentService(get()) }
+    single { ActivityService(get(), get(), get()) }
 
 
 }

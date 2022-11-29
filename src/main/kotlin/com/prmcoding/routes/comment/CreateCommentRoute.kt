@@ -3,6 +3,7 @@ package com.prmcoding.routes.comment
 import com.prmcoding.data.requests.CreateCommentRequest
 import com.prmcoding.responses.BasicApiResponse
 import com.prmcoding.routes.userId
+import com.prmcoding.service.ActivityService
 import com.prmcoding.service.CommentService
 import com.prmcoding.util.ApiResponseMessages
 import io.ktor.http.*
@@ -13,7 +14,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.createCommentRoute(
-    commentService: CommentService
+    commentService: CommentService,
+    activityService: ActivityService
 ) {
     authenticate {
         post("/api/comment/create") {
@@ -23,9 +25,12 @@ fun Route.createCommentRoute(
                     return@post
                 }
 
+
+            val userId = call.userId
+
             when (commentService.createComment(
                 createCommentRequest = request,
-                userId = call.userId
+                userId = userId
             )) {
                 is CommentService.ValidationEvent.ErrorFieldEmpty -> {
                     call.respond(
@@ -46,6 +51,10 @@ fun Route.createCommentRoute(
                     )
                 }
                 is CommentService.ValidationEvent.Success -> {
+                    activityService.addCommentActivity(
+                        byUserId = userId,
+                        postId = request.postId
+                    )
                     call.respond(
                         status = HttpStatusCode.OK,
                         message = BasicApiResponse(
