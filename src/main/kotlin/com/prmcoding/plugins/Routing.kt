@@ -13,6 +13,7 @@ import com.prmcoding.routes.post.deletePostRoute
 import com.prmcoding.routes.post.getPostForFollowsRoute
 import com.prmcoding.routes.user.createUserRoute
 import com.prmcoding.routes.user.loginUserRoute
+import com.prmcoding.routes.user.searchUserRoute
 import com.prmcoding.service.*
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
@@ -39,6 +40,7 @@ fun Application.configureRouting() {
             jwtIssuer = jwtIssuer,
             jwtSecret = jwtSecret,
         )
+        searchUserRoute(userService = userService)
 
         // Following Routes
         followUserRoute(followService = followService, activityService = activityService)
