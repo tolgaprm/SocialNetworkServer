@@ -3,9 +3,9 @@ package com.prmcoding.data.repository.post
 import com.prmcoding.data.models.Following
 import com.prmcoding.data.models.Post
 import com.prmcoding.data.models.User
-import org.litote.kmongo.`in`
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
+import org.litote.kmongo.`in`
 
 class PostRepositoryImpl(
     db: CoroutineDatabase
@@ -40,6 +40,14 @@ class PostRepositoryImpl(
             }
 
         return posts.find(Post::userId `in` userIdsFromFollows)
+            .skip(page * pageSize)
+            .limit(pageSize)
+            .descendingSort(Post::timestamp)
+            .toList()
+    }
+
+    override suspend fun getPostsForProfile(userId: String, page: Int, pageSize: Int): List<Post> {
+        return posts.find(Post::userId eq userId)
             .skip(page * pageSize)
             .limit(pageSize)
             .descendingSort(Post::timestamp)

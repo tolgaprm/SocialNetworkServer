@@ -14,7 +14,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.likeParentRoute(
+fun Route.likeParent(
     likeService: LikeService,
     activityService: ActivityService
 ) {

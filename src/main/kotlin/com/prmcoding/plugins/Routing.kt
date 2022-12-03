@@ -1,21 +1,20 @@
 package com.prmcoding.plugins
 
 import com.prmcoding.routes.activity.getActivities
-import com.prmcoding.routes.comment.createCommentRoute
-import com.prmcoding.routes.comment.deleteCommentRoute
-import com.prmcoding.routes.comment.getCommentsForPostRoute
-import com.prmcoding.routes.follow.followUserRoute
-import com.prmcoding.routes.follow.unFollowUserRoute
-import com.prmcoding.routes.likes.likeParentRoute
-import com.prmcoding.routes.likes.unlikeParentRoute
-import com.prmcoding.routes.post.createPostRoute
-import com.prmcoding.routes.post.deletePostRoute
-import com.prmcoding.routes.post.getPostForFollowsRoute
-import com.prmcoding.routes.user.createUserRoute
-import com.prmcoding.routes.user.loginUserRoute
-import com.prmcoding.routes.user.searchUserRoute
+import com.prmcoding.routes.comment.createComment
+import com.prmcoding.routes.comment.deleteComment
+import com.prmcoding.routes.comment.getCommentsForPost
+import com.prmcoding.routes.follow.followUser
+import com.prmcoding.routes.follow.unFollowUser
+import com.prmcoding.routes.likes.likeParent
+import com.prmcoding.routes.likes.unlikeParent
+import com.prmcoding.routes.post.createPost
+import com.prmcoding.routes.post.deletePost
+import com.prmcoding.routes.post.getPostForFollows
+import com.prmcoding.routes.user.*
 import com.prmcoding.service.*
 import io.ktor.server.application.*
+import io.ktor.server.http.content.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
 
@@ -33,38 +32,45 @@ fun Application.configureRouting() {
 
     routing {
         // User Routes
-        createUserRoute(userService = userService)
-        loginUserRoute(
+        createUser(userService = userService)
+        loginUser(
             userService = userService,
             jwtAudience = jwtAudience,
             jwtIssuer = jwtIssuer,
             jwtSecret = jwtSecret,
         )
-        searchUserRoute(userService = userService)
+        searchUser(userService = userService)
+        getUserProfile(userService = userService)
+        getPostsForProfile(postService = postService)
+        updateUserProfile(userService = userService)
 
         // Following Routes
-        followUserRoute(followService = followService, activityService = activityService)
-        unFollowUserRoute(followService = followService)
+        followUser(followService = followService, activityService = activityService)
+        unFollowUser(followService = followService)
 
         // Post Routes
-        createPostRoute(postService = postService)
-        getPostForFollowsRoute(postService = postService)
-        deletePostRoute(
+        createPost(postService = postService)
+        getPostForFollows(postService = postService)
+        deletePost(
             postService = postService,
             likeService = likeService,
             commentService = commentService
         )
 
         // Like Routes
-        likeParentRoute(likeService = likeService, activityService = activityService)
-        unlikeParentRoute(likeService = likeService)
+        likeParent(likeService = likeService, activityService = activityService)
+        unlikeParent(likeService = likeService)
 
         // Comment Routes
-        createCommentRoute(commentService = commentService, activityService = activityService)
-        deleteCommentRoute(commentService = commentService, likeService = likeService)
-        getCommentsForPostRoute(commentService = commentService)
+        createComment(commentService = commentService, activityService = activityService)
+        deleteComment(commentService = commentService, likeService = likeService)
+        getCommentsForPost(commentService = commentService)
 
         // Activity Routes
         getActivities(activityService = activityService)
+
+        static {
+            resources("static")
+        }
     }
 }

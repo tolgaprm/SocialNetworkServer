@@ -50,12 +50,11 @@ val mainModule = module {
         ActivityRepositoryImpl(get())
     }
 
-    single { UserService(get(),get()) }
+    single { UserService(get(), get()) }
     single { FollowService(get()) }
     single { PostService(get()) }
     single { LikeService(get()) }
     single { CommentService(get()) }
     single { ActivityService(get(), get(), get()) }
-
 
 }

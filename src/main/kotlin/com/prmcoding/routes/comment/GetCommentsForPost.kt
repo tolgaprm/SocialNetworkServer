@@ -8,7 +8,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.getCommentsForPostRoute(
+fun Route.getCommentsForPost(
     commentService: CommentService
 ) {
     authenticate {

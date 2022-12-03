@@ -12,7 +12,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.deletePostRoute(
+fun Route.deletePost(
     postService: PostService,
     likeService: LikeService,
     commentService: CommentService

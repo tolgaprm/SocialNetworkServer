@@ -10,14 +10,14 @@ import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.searchUserRoute(
+fun Route.searchUser(
     userService: UserService
 ) {
     authenticate {
         get("/api/user/search") {
             val query = call.parameters[QueryParameters.PARAM_QUERY]
 
-            if (query == null || query.isBlank()) {
+            if (query.isNullOrBlank()) {
                 call.respond(
                     HttpStatusCode.OK,
                     listOf<UserResponseItem>()

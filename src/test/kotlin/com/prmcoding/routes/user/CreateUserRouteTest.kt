@@ -73,7 +73,7 @@ class CreateUserRouteTest : KoinTest {
 
         application {
            install(Routing){
-               createUserRoute(userRepository)
+               createUser(userRepository)
            }
         }
 
@@ -107,7 +107,6 @@ class CreateUserRouteTest : KoinTest {
             )
 
             setBody(createAccountRequest)
-
         }
 
         val responseText = Json.decodeFromString<BasicApiResponse>(response.bodyAsText())

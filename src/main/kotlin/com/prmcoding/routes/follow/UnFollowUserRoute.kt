@@ -12,7 +12,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.unFollowUserRoute(
+fun Route.unFollowUser(
     followService: FollowService
 ) {
     authenticate {

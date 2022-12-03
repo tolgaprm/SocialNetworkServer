@@ -12,7 +12,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.unlikeParentRoute(
+fun Route.unlikeParent(
     likeService: LikeService
 ) {
     authenticate {

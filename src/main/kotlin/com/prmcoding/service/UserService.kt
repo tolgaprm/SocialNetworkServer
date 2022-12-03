@@ -5,9 +5,11 @@ import com.prmcoding.data.repository.follow.FollowRepository
 import com.prmcoding.data.repository.user.UserRepository
 import com.prmcoding.data.requests.CreateAccountRequest
 import com.prmcoding.data.requests.LoginRequest
+import com.prmcoding.data.requests.UpdateProfileRequest
+import com.prmcoding.responses.ProfileResponse
 import com.prmcoding.responses.UserResponseItem
 
-// ViewModel'a benzer bir yapı, bu servis yapısında rpute içerisinde uygulanan logic işlemeri burada yapıyoruz.
+
 class UserService(
     private val userRepository: UserRepository,
     private val followRepository: FollowRepository
@@ -30,6 +32,46 @@ class UserService(
                 linkedInUrl = ""
             )
         )
+    }
+
+    suspend fun updateUser(
+        userId: String,
+        profileImageUrl: String,
+        updateProfileRequest: UpdateProfileRequest
+    ): Boolean {
+        return userRepository.updateUser(
+            userId = userId,
+            profileImageUrl = profileImageUrl,
+            updateProfileRequest = updateProfileRequest
+        )
+    }
+
+
+    // CallerUserId which want to see userId Profile
+    suspend fun getUserProfile(userId: String, callerUserId: String): ProfileResponse? {
+        val user = userRepository.getUserById(userId) ?: return null
+        return ProfileResponse(
+            username = user.username,
+            bio = user.bio,
+            followerCount = user.followerCount,
+            followingCount = user.followingCount,
+            postCount = user.postCount,
+            profilePictureUrl = user.profileImageUrl,
+            topSkillsUrls = user.skills,
+            gitHubUrl = user.gitHubUrl,
+            instagramUrl = user.instagramUrl,
+            linkedInUrl = user.linkedInUrl,
+            isOwnProfile = userId == callerUserId,
+            isFollowing = if (userId != callerUserId) {
+                followRepository.doesUserFollow(
+                    followingUserId = callerUserId,
+                    followedUserId = userId
+                )
+            } else {
+                false
+            }
+        )
+
     }
 
 

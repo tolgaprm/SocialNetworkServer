@@ -14,7 +14,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.util.*
 
-fun Route.loginUserRoute(
+fun Route.loginUser(
     userService: UserService,
     jwtIssuer: String,
     jwtAudience: String,
