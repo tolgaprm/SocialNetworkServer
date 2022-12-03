@@ -7,6 +7,7 @@ import com.prmcoding.di.testModule
 import com.prmcoding.plugins.configureRouting
 import com.prmcoding.repository.user.FakeUserRepository
 import com.prmcoding.responses.BasicApiResponse
+import com.prmcoding.service.UserService
 import com.prmcoding.util.ApiResponseMessages
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
@@ -31,6 +32,7 @@ import kotlin.test.Test
 class CreateUserRouteTest : KoinTest {
 
     private val userRepository by inject<FakeUserRepository>()
+    private val userService by inject<UserService>()
 
     @BeforeTest
     fun setup() {
@@ -72,9 +74,9 @@ class CreateUserRouteTest : KoinTest {
     fun `Create user, user already exists, responds with unsuccessful`() = testApplication {
 
         application {
-           install(Routing){
-               createUser(userRepository)
-           }
+            install(Routing) {
+                createUser(userService = user)
+            }
         }
 
         val user = User(

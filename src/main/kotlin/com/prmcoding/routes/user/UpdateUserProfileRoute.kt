@@ -6,6 +6,7 @@ import com.prmcoding.routes.userId
 import com.prmcoding.service.UserService
 import com.prmcoding.util.Constants.BASE_URL
 import com.prmcoding.util.Constants.PROFILE_PICTURE_PATH
+import com.prmcoding.util.save
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
@@ -16,7 +17,6 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.io.File
-import java.util.*
 
 
 fun Route.updateUserProfile(
@@ -38,10 +38,7 @@ fun Route.updateUserProfile(
                     }
 
                     is PartData.FileItem -> {
-                        val fileBytes = partData.streamProvider().readBytes()
-                        val fileExtension = partData.originalFileName?.takeLastWhile { it != '.' }
-                        fileName = UUID.randomUUID().toString() + "." + fileExtension
-                        File("$PROFILE_PICTURE_PATH$fileName").writeBytes(fileBytes)
+                        fileName = partData.save(PROFILE_PICTURE_PATH)
                     }
 
                     is PartData.BinaryItem -> Unit

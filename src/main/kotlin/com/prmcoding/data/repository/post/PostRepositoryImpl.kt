@@ -2,7 +2,6 @@ package com.prmcoding.data.repository.post
 
 import com.prmcoding.data.models.Following
 import com.prmcoding.data.models.Post
-import com.prmcoding.data.models.User
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
 import org.litote.kmongo.`in`
@@ -13,15 +12,9 @@ class PostRepositoryImpl(
 
     private val posts = db.getCollection<Post>()
     private val following = db.getCollection<Following>()
-    private val users = db.getCollection<User>()
 
-    override suspend fun createPostIfUserExists(post: Post): Boolean {
-        val doesUserExists = users.findOneById(post.userId) != null
-        if (!doesUserExists) {
-            return false
-        }
-        posts.insertOne(post)
-        return true
+    override suspend fun createPost(post: Post): Boolean {
+        return posts.insertOne(post).wasAcknowledged()
     }
 
     override suspend fun deletePost(postId: String) {
