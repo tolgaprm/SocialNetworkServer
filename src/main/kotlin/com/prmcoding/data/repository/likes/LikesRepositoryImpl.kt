@@ -20,7 +20,8 @@ class LikesRepositoryImpl(
                 Like(
                     userId = userId,
                     parentId = parentId,
-                    parentType = parentType
+                    parentType = parentType,
+                    timestamp = System.currentTimeMillis()
                 )
             )
             true
@@ -46,5 +47,17 @@ class LikesRepositoryImpl(
 
     override suspend fun deleteLikesForParent(parentId: String) {
         likes.deleteMany(Like::parentId eq parentId)
+    }
+
+    override suspend fun getLikesForParent(
+        parentId: String,
+        page: Int,
+        pageSize: Int
+    ): List<Like> {
+        return likes.find(Like::parentId eq parentId)
+            .skip(page * pageSize)
+            .limit(pageSize)
+            .descendingSort(Like::timestamp)
+            .toList()
     }
 }

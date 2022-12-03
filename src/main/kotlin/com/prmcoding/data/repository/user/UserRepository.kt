@@ -21,4 +21,6 @@ interface UserRepository {
     suspend fun doesEmailBelongToUserId(email: String, userId: String): Boolean
 
     suspend fun searchForUsers(query: String): List<User>
+
+    suspend fun getUsersByIds(userIds: List<String>): List<User>
 }

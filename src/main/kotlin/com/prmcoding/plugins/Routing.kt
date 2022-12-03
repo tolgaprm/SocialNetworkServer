@@ -6,6 +6,7 @@ import com.prmcoding.routes.comment.deleteComment
 import com.prmcoding.routes.comment.getCommentsForPost
 import com.prmcoding.routes.follow.followUser
 import com.prmcoding.routes.follow.unFollowUser
+import com.prmcoding.routes.likes.getLikesForParent
 import com.prmcoding.routes.likes.likeParent
 import com.prmcoding.routes.likes.unlikeParent
 import com.prmcoding.routes.post.createPost
@@ -60,6 +61,7 @@ fun Application.configureRouting() {
         // Like Routes
         likeParent(likeService = likeService, activityService = activityService)
         unlikeParent(likeService = likeService)
+        getLikesForParent(likeService = likeService)
 
         // Comment Routes
         createComment(commentService = commentService, activityService = activityService)
