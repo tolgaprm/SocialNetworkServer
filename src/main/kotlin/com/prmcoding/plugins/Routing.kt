@@ -12,6 +12,7 @@ import com.prmcoding.routes.likes.unlikeParent
 import com.prmcoding.routes.post.createPost
 import com.prmcoding.routes.post.deletePost
 import com.prmcoding.routes.post.getPostForFollows
+import com.prmcoding.routes.skill.getSkills
 import com.prmcoding.routes.user.*
 import com.prmcoding.service.*
 import io.ktor.server.application.*
@@ -26,6 +27,7 @@ fun Application.configureRouting() {
     val likeService: LikeService by inject()
     val commentService: CommentService by inject()
     val activityService: ActivityService by inject()
+    val skillsService: SkillService by inject()
 
     val jwtIssuer = environment.config.property("jwt.domain").getString()
     val jwtAudience = environment.config.property("jwt.audience").getString()
@@ -33,6 +35,7 @@ fun Application.configureRouting() {
 
     routing {
         // User Routes
+        authenticated()
         createUser(userService = userService)
         loginUser(
             userService = userService,
@@ -44,6 +47,9 @@ fun Application.configureRouting() {
         getUserProfile(userService = userService)
         getPostsForProfile(postService = postService)
         updateUserProfile(userService = userService)
+
+        //Skill Route
+        getSkills(skillService = skillsService)
 
         // Following Routes
         followUser(followService = followService, activityService = activityService)

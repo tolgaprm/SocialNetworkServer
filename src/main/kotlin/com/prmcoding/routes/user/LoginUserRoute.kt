@@ -34,7 +34,7 @@ fun Route.loginUser(
         val user = userService.getUserByEmail(email = request.email) ?: kotlin.run {
             call.respond(
                 status = HttpStatusCode.OK,
-                message = BasicApiResponse(
+                message = BasicApiResponse<Unit>(
                     successful = false,
                     message = INVALID_CREDENTIALS
                 )
@@ -58,12 +58,15 @@ fun Route.loginUser(
 
             call.respond(
                 status = HttpStatusCode.OK,
-                message = AuthResponse(token = token)
+                message = BasicApiResponse(
+                    successful = true,
+                    data = AuthResponse(token = token)
+                )
             )
-        }else{
+        } else {
             call.respond(
                 status = HttpStatusCode.OK,
-                message = BasicApiResponse(
+                message = BasicApiResponse<Unit>(
                     successful = false,
                     message = INVALID_CREDENTIALS
                 )

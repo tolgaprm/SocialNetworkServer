@@ -29,7 +29,8 @@ class UserRepositoryImpl(
 
     override suspend fun updateUser(
         userId: String,
-        profileImageUrl: String,
+        profileImageUrl: String?,
+        bannerUrl: String?,
         updateProfileRequest: UpdateProfileRequest
     ): Boolean {
         val user = getUserById(userId) ?: return false
@@ -40,7 +41,8 @@ class UserRepositoryImpl(
                 email = user.email,
                 username = updateProfileRequest.username,
                 password = user.password,
-                profileImageUrl = profileImageUrl,
+                bannerUrl = bannerUrl ?: user.bannerUrl,
+                profileImageUrl = profileImageUrl ?: user.profileImageUrl,
                 bio = updateProfileRequest.bio,
                 skills = updateProfileRequest.skills,
                 gitHubUrl = updateProfileRequest.gitHubUrl,

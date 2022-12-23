@@ -21,7 +21,7 @@ fun Route.createUser(userService: UserService) {
 
         if (userService.doesUserWithEmailExist(email = request.email)) {
             call.respond(
-                BasicApiResponse(
+                BasicApiResponse<Unit>(
                     message = USER_ALREADY_EXISTS,
                     successful = false
                 )
@@ -32,7 +32,7 @@ fun Route.createUser(userService: UserService) {
         when (userService.validateCreateAccountRequest(request = request)) {
             is UserService.ValidationEvent.ErrorFieldEmpty -> {
                 call.respond(
-                    BasicApiResponse(
+                    BasicApiResponse<Unit>(
                         message = FIELDS_BLANK,
                         successful = false
                     )
@@ -41,7 +41,7 @@ fun Route.createUser(userService: UserService) {
             is UserService.ValidationEvent.Success -> {
                 userService.createUser(request = request)
                 call.respond(
-                    BasicApiResponse(successful = true)
+                    BasicApiResponse<Unit>(successful = true)
                 )
             }
         }

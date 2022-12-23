@@ -26,6 +26,7 @@ class UserService(
                 username = request.username,
                 password = request.password,
                 profileImageUrl = "",
+                bannerUrl = "",
                 bio = "",
                 gitHubUrl = "",
                 instagramUrl = "",
@@ -36,12 +37,14 @@ class UserService(
 
     suspend fun updateUser(
         userId: String,
-        profileImageUrl: String,
+        profileImageUrl: String?,
+        bannerUrl: String?,
         updateProfileRequest: UpdateProfileRequest
     ): Boolean {
         return userRepository.updateUser(
             userId = userId,
             profileImageUrl = profileImageUrl,
+            bannerUrl = bannerUrl,
             updateProfileRequest = updateProfileRequest
         )
     }
@@ -51,13 +54,15 @@ class UserService(
     suspend fun getUserProfile(userId: String, callerUserId: String): ProfileResponse? {
         val user = userRepository.getUserById(userId) ?: return null
         return ProfileResponse(
+            userId = user.id,
             username = user.username,
             bio = user.bio,
             followerCount = user.followerCount,
             followingCount = user.followingCount,
             postCount = user.postCount,
+            bannerUrl = user.bannerUrl,
             profilePictureUrl = user.profileImageUrl,
-            topSkillsUrls = user.skills,
+            topSkills = user.skills,
             gitHubUrl = user.gitHubUrl,
             instagramUrl = user.instagramUrl,
             linkedInUrl = user.linkedInUrl,
@@ -92,6 +97,7 @@ class UserService(
                 it.followedUserId == user.id
             } != null
             UserResponseItem(
+                userId = user.id,
                 userName = user.username,
                 profilePictureUrl = user.profileImageUrl,
                 bio = user.bio,

@@ -35,9 +35,9 @@ fun Route.deleteComment(
             val isDeletedComment = commentService.deleteComment(commentId = request.commentId)
             if (isDeletedComment) {
                 likeService.deleteLikesForParent(parentId = request.commentId)
-                call.respond(HttpStatusCode.OK, BasicApiResponse(successful = true))
+                call.respond(HttpStatusCode.OK, BasicApiResponse<Unit>(successful = true))
             } else {
-                call.respond(HttpStatusCode.NotFound, BasicApiResponse(successful = false))
+                call.respond(HttpStatusCode.NotFound, BasicApiResponse<Unit>(successful = false))
             }
         }
     }

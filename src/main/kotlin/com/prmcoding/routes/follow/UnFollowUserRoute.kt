@@ -30,14 +30,14 @@ fun Route.unFollowUser(
             if (didUserExist) {
                 call.respond(
                     status = HttpStatusCode.OK,
-                    message = BasicApiResponse(
+                    message = BasicApiResponse<Unit>(
                         successful = true
                     )
                 )
             } else {
                 call.respond(
                     status = HttpStatusCode.OK,
-                    message = BasicApiResponse(
+                    message = BasicApiResponse<Unit>(
                         successful = true,
                         message = ApiResponseMessages.USER_NOT_FOUND
                     )

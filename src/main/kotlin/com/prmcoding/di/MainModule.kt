@@ -11,6 +11,8 @@ import com.prmcoding.data.repository.likes.LikeRepository
 import com.prmcoding.data.repository.likes.LikesRepositoryImpl
 import com.prmcoding.data.repository.post.PostRepository
 import com.prmcoding.data.repository.post.PostRepositoryImpl
+import com.prmcoding.data.repository.skill.SkillRepository
+import com.prmcoding.data.repository.skill.SkillRepositoryImpl
 import com.prmcoding.data.repository.user.UserRepository
 import com.prmcoding.data.repository.user.UserRepositoryImpl
 import com.prmcoding.service.*
@@ -49,6 +51,9 @@ val mainModule = module {
     single<ActivityRepository> {
         ActivityRepositoryImpl(get())
     }
+    single<SkillRepository> {
+        SkillRepositoryImpl(get())
+    }
 
     single { UserService(get(), get()) }
     single { FollowService(get()) }
@@ -56,5 +61,5 @@ val mainModule = module {
     single { LikeService(get(), get(), get()) }
     single { CommentService(get()) }
     single { ActivityService(get(), get(), get()) }
-
+    single { SkillService(get()) }
 }

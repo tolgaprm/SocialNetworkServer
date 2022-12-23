@@ -55,7 +55,7 @@ fun Route.createPost(
                 if (createPostAcknowledged) {
                     call.respond(
                         HttpStatusCode.OK,
-                        BasicApiResponse(successful = true)
+                        BasicApiResponse<Unit>(successful = true)
                     )
                 } else {
                     File("$POST_PICTURE_PATH$fileName").delete()

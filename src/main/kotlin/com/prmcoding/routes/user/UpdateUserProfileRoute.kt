@@ -4,6 +4,7 @@ import com.prmcoding.data.requests.UpdateProfileRequest
 import com.prmcoding.responses.BasicApiResponse
 import com.prmcoding.routes.userId
 import com.prmcoding.service.UserService
+import com.prmcoding.util.Constants.BANNER_IMAGE_PATH
 import com.prmcoding.util.Constants.BASE_URL
 import com.prmcoding.util.Constants.PROFILE_PICTURE_PATH
 import com.prmcoding.util.save
@@ -27,7 +28,9 @@ fun Route.updateUserProfile(
             //Multipart request -> İçerisinde byte dataları içeren isteklerdir.
             val multipart = call.receiveMultipart()
             var updateProfileRequest: UpdateProfileRequest? = null
-            var fileName: String? = null
+            var profilePictureFileName: String? = null
+            var bannerImageFileName: String? = null
+
             multipart.forEachPart { partData ->
                 when (partData) {
                     is PartData.FormItem -> {
@@ -38,27 +41,33 @@ fun Route.updateUserProfile(
                     }
 
                     is PartData.FileItem -> {
-                        fileName = partData.save(PROFILE_PICTURE_PATH)
+                        if (partData.name == "profile_picture") {
+                            profilePictureFileName = partData.save(PROFILE_PICTURE_PATH)
+                        } else if (partData.name == "banner_image") {
+                            bannerImageFileName = partData.save(BANNER_IMAGE_PATH)
+                        }
                     }
 
                     is PartData.BinaryItem -> Unit
                     is PartData.BinaryChannelItem -> Unit
                 }
             }
-            val profilePictureUrl = "${BASE_URL}profile_pictures/$fileName"
+            val profilePictureUrl = "${BASE_URL}profile_pictures/$profilePictureFileName"
+            val bannerImageUrl = "${BASE_URL}banner_images/$bannerImageFileName"
             updateProfileRequest?.let { request ->
                 val updateAcknowledged = userService.updateUser(
                     userId = call.userId,
-                    profileImageUrl = profilePictureUrl,
+                    profileImageUrl = if (profilePictureFileName == null) null else profilePictureUrl,
+                    bannerUrl = if (bannerImageFileName == null) null else bannerImageUrl,
                     updateProfileRequest = request
                 )
                 if (updateAcknowledged) {
                     call.respond(
                         HttpStatusCode.OK,
-                        BasicApiResponse(successful = true)
+                        BasicApiResponse<Unit>(successful = true)
                     )
                 } else {
-                    File("$PROFILE_PICTURE_PATH$fileName").delete()
+                    File("$PROFILE_PICTURE_PATH$profilePictureFileName").delete()
                     call.respond(HttpStatusCode.InternalServerError)
                 }
             } ?: kotlin.run {

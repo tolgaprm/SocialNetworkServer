@@ -35,7 +35,7 @@ fun Route.createComment(
                 is CommentService.ValidationEvent.ErrorFieldEmpty -> {
                     call.respond(
                         status = HttpStatusCode.OK,
-                        message = BasicApiResponse(
+                        message = BasicApiResponse<Unit>(
                             successful = false,
                             message = ApiResponseMessages.FIELDS_BLANK
                         )
@@ -44,7 +44,7 @@ fun Route.createComment(
                 is CommentService.ValidationEvent.ErrorCommentTooLong -> {
                     call.respond(
                         status = HttpStatusCode.OK,
-                        message = BasicApiResponse(
+                        message = BasicApiResponse<Unit>(
                             successful = false,
                             message = ApiResponseMessages.COMMENT_TOO_LONG
                         )
@@ -57,7 +57,7 @@ fun Route.createComment(
                     )
                     call.respond(
                         status = HttpStatusCode.OK,
-                        message = BasicApiResponse(
+                        message = BasicApiResponse<Unit>(
                             successful = true
                         )
                     )

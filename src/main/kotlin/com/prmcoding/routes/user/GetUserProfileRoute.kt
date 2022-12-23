@@ -1,6 +1,7 @@
 package com.prmcoding.routes.user
 
 import com.prmcoding.responses.BasicApiResponse
+import com.prmcoding.responses.ProfileResponse
 import com.prmcoding.routes.userId
 import com.prmcoding.service.UserService
 import com.prmcoding.util.ApiResponseMessages
@@ -27,7 +28,7 @@ fun Route.getUserProfile(
             )
             if (profileResponse == null) {
                 call.respond(
-                    HttpStatusCode.OK, BasicApiResponse(
+                    HttpStatusCode.OK, BasicApiResponse<Unit>(
                         successful = false,
                         message = ApiResponseMessages.USER_NOT_FOUND
                     )
@@ -36,10 +37,11 @@ fun Route.getUserProfile(
             }
             call.respond(
                 HttpStatusCode.OK,
-                profileResponse
+                BasicApiResponse<ProfileResponse>(
+                    successful = true,
+                    data = profileResponse
+                )
             )
-
-
         }
     }
 }
