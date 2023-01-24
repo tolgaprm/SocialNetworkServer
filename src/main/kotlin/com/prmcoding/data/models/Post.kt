@@ -13,5 +13,4 @@ data class Post(
     val commentCount: Int = 0,
     @BsonId
     val id: String = ObjectId().toString()
-
 )

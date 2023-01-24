@@ -1,5 +1,6 @@
 package com.prmcoding.data.models
 
+import com.prmcoding.responses.SkillsDto
 import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.types.ObjectId
 
@@ -11,7 +12,7 @@ data class User(
     val bannerUrl: String,
     val profileImageUrl: String,
     val bio: String,
-    val skills: List<Skill> = listOf(),
+    val skills: List<SkillsDto> = listOf(),
     val gitHubUrl: String?,
     val instagramUrl: String?,
     val linkedInUrl: String?,

@@ -1,4 +1,4 @@
-package com.prmcoding.routes.user
+package com.prmcoding.routes.post
 
 import com.prmcoding.routes.userId
 import com.prmcoding.service.PostService

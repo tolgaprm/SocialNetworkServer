@@ -60,9 +60,13 @@ fun Route.loginUser(
                 status = HttpStatusCode.OK,
                 message = BasicApiResponse(
                     successful = true,
-                    data = AuthResponse(token = token)
+                    data = AuthResponse(
+                        userId = user.id,
+                        token = token
+                    )
+                ),
+
                 )
-            )
         } else {
             call.respond(
                 status = HttpStatusCode.OK,

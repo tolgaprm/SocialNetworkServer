@@ -12,6 +12,7 @@ import com.prmcoding.routes.likes.unlikeParent
 import com.prmcoding.routes.post.createPost
 import com.prmcoding.routes.post.deletePost
 import com.prmcoding.routes.post.getPostForFollows
+import com.prmcoding.routes.post.getPostsForProfile
 import com.prmcoding.routes.skill.getSkills
 import com.prmcoding.routes.user.*
 import com.prmcoding.service.*
