@@ -6,6 +6,7 @@ import com.prmcoding.data.repository.comment.CommentRepository
 import com.prmcoding.data.repository.post.PostRepository
 import com.prmcoding.data.util.ActivityType
 import com.prmcoding.data.util.ParentType
+import com.prmcoding.responses.ActivityResponse
 import com.prmcoding.util.Constants
 
 class ActivityService(
@@ -17,7 +18,7 @@ class ActivityService(
         userId: String,
         page: Int = 0,
         pageSize: Int = Constants.DEFAULT_ACTIVITY_PAGE_SIZE
-    ): List<Activity> {
+    ): List<ActivityResponse> {
         return activityRepository.getActivitiesForUser(
             userId = userId,
             page = page,

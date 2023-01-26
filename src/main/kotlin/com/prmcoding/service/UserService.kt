@@ -96,6 +96,7 @@ class UserService(
             val isFollowing = followsByUser.find {
                 it.followedUserId == user.id
             } != null
+
             UserResponseItem(
                 userId = user.id,
                 userName = user.username,
@@ -103,7 +104,7 @@ class UserService(
                 bio = user.bio,
                 isFollowing = isFollowing
             )
-        }
+        }.filter { it.userId != userId }
     }
 
     fun validateLoginRequest(request: LoginRequest): ValidationEvent {
