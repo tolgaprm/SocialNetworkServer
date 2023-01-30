@@ -24,7 +24,8 @@ fun Route.unlikeParent(
 
             val unlikeSuccessful = likeService.unLikeParent(
                 userId = call.userId,
-                parentId = request.parentId
+                parentId = request.parentId,
+                parentType = request.parentType
             )
             if (unlikeSuccessful) {
                 call.respond(

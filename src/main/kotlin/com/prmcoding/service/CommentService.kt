@@ -2,11 +2,14 @@ package com.prmcoding.service
 
 import com.prmcoding.data.models.Comment
 import com.prmcoding.data.repository.comment.CommentRepository
+import com.prmcoding.data.repository.user.UserRepository
 import com.prmcoding.data.requests.CreateCommentRequest
+import com.prmcoding.responses.CommentResponse
 import com.prmcoding.util.Constants
 
 class CommentService(
-    private val repository: CommentRepository
+    private val commentRepository: CommentRepository,
+    private val userRepository: UserRepository
 ) {
 
     suspend fun createComment(
@@ -23,31 +26,33 @@ class CommentService(
             }
         }
 
-        repository.createComment(
-            Comment(
-                comment = createCommentRequest.comment,
-                userId = userId,
-                postId = createCommentRequest.postId,
-                timestamp = System.currentTimeMillis()
-            )
+        val user = userRepository.getUserById(id = userId) ?: return ValidationEvent.UserNotFound
+        Comment(
+            comment = createCommentRequest.comment,
+            userId = userId,
+            postId = createCommentRequest.postId,
+            timestamp = System.currentTimeMillis(),
+            username = user.username,
+            profileImageUrl = user.profileImageUrl,
+            likeCount = 0
         )
         return ValidationEvent.Success
     }
 
     suspend fun deleteComment(commentId: String): Boolean {
-        return repository.deleteComment(commentId = commentId)
+        return commentRepository.deleteComment(commentId = commentId)
     }
 
-    suspend fun getCommentsForPost(postId: String): List<Comment> {
-        return repository.getCommentForPost(postId = postId)
+    suspend fun getCommentsForPost(postId: String): List<CommentResponse> {
+        return commentRepository.getCommentForPost(postId = postId)
     }
 
     suspend fun deleteCommentsForParent(parentId: String) {
-        return repository.deleteCommentForParent(parentId = parentId)
+        return commentRepository.deleteCommentForParent(parentId = parentId)
     }
 
     suspend fun getCommentById(commentId: String): Comment? {
-        return repository.getComment(commentId = commentId)
+        return commentRepository.getComment(commentId = commentId)
     }
 
 
@@ -55,5 +60,6 @@ class CommentService(
         object ErrorFieldEmpty : ValidationEvent()
         object ErrorCommentTooLong : ValidationEvent()
         object Success : ValidationEvent()
+        object UserNotFound : ValidationEvent()
     }
 }

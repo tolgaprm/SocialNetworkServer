@@ -41,6 +41,7 @@ fun Route.createComment(
                         )
                     )
                 }
+
                 is CommentService.ValidationEvent.ErrorCommentTooLong -> {
                     call.respond(
                         status = HttpStatusCode.OK,
@@ -50,6 +51,7 @@ fun Route.createComment(
                         )
                     )
                 }
+
                 is CommentService.ValidationEvent.Success -> {
                     activityService.addCommentActivity(
                         byUserId = userId,
@@ -59,6 +61,16 @@ fun Route.createComment(
                         status = HttpStatusCode.OK,
                         message = BasicApiResponse<Unit>(
                             successful = true
+                        )
+                    )
+                }
+
+                is CommentService.ValidationEvent.UserNotFound -> {
+                    call.respond(
+                        HttpStatusCode.OK,
+                        BasicApiResponse<Unit>(
+                            successful = false,
+                            message = "User not found"
                         )
                     )
                 }
