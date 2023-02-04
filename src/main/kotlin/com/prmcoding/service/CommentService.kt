@@ -27,15 +27,18 @@ class CommentService(
         }
 
         val user = userRepository.getUserById(id = userId) ?: return ValidationEvent.UserNotFound
-        Comment(
-            comment = createCommentRequest.comment,
-            userId = userId,
-            postId = createCommentRequest.postId,
-            timestamp = System.currentTimeMillis(),
-            username = user.username,
-            profileImageUrl = user.profileImageUrl,
-            likeCount = 0
+        commentRepository.createComment(
+            comment = Comment(
+                comment = createCommentRequest.comment,
+                userId = userId,
+                postId = createCommentRequest.postId,
+                timestamp = System.currentTimeMillis(),
+                username = user.username,
+                profileImageUrl = user.profileImageUrl,
+                likeCount = 0
+            )
         )
+
         return ValidationEvent.Success
     }
 
