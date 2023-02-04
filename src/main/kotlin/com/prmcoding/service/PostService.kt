@@ -3,6 +3,7 @@ package com.prmcoding.service
 import com.prmcoding.data.models.Post
 import com.prmcoding.data.repository.post.PostRepository
 import com.prmcoding.data.requests.CreatePostRequest
+import com.prmcoding.responses.PostResponse
 import com.prmcoding.util.Constants
 
 class PostService(
@@ -44,7 +45,13 @@ class PostService(
         )
     }
 
-    suspend fun getPost(postId: String): Post? = postRepository.getPost(postId)
+    suspend fun getPost(postId: String): Post? {
+        return postRepository.getPost(postId = postId)
+    }
+
+    suspend fun getPostDetails(postId: String, userId: String): PostResponse? {
+        return postRepository.getPostDetails(postId = postId, userId = userId)
+    }
 
     suspend fun deletePost(postId: String) {
         postRepository.deletePost(postId = postId)

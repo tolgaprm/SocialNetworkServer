@@ -35,7 +35,7 @@ class ActivityService(
         byUserId: String,
         postId: String
     ): Boolean {
-        val userIdOfPost = postRepository.getPost(postId)?.userId ?: return false
+        val userIdOfPost = postRepository.getPost(postId = postId)?.userId ?: return false
 
         if (byUserId == userIdOfPost) {
             return false
@@ -63,9 +63,11 @@ class ActivityService(
             is ParentType.Post -> {
                 postRepository.getPost(parentId)?.userId
             }
+
             is ParentType.Comment -> {
                 commentRepository.getComment(parentId)?.userId
             }
+
             is ParentType.None -> {
                 return false
             }

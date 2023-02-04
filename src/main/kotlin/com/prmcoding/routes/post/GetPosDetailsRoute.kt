@@ -1,6 +1,7 @@
 package com.prmcoding.routes.post
 
 import com.prmcoding.responses.BasicApiResponse
+import com.prmcoding.routes.userId
 import com.prmcoding.service.PostService
 import com.prmcoding.util.QueryParameters.PARAM_POST_ID
 import io.ktor.http.*
@@ -19,7 +20,7 @@ fun Route.getPostDetails(
                 return@get
             }
 
-            val post = postService.getPost(postId = postId) ?: kotlin.run {
+            val post = postService.getPostDetails(userId = call.userId, postId = postId) ?: kotlin.run {
                 call.respond(
                     HttpStatusCode.NotFound
                 )

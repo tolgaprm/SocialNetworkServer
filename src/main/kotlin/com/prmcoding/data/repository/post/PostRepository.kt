@@ -1,6 +1,7 @@
 package com.prmcoding.data.repository.post
 
 import com.prmcoding.data.models.Post
+import com.prmcoding.responses.PostResponse
 import com.prmcoding.util.Constants.DEFAULT_POST_PAGE_SIZE
 
 interface PostRepository {
@@ -22,6 +23,11 @@ interface PostRepository {
     ): List<Post>
 
     suspend fun getPost(postId: String): Post?
+
+    suspend fun getPostDetails(
+        userId: String,
+        postId: String
+    ): PostResponse?
 
 
 }
