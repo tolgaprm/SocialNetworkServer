@@ -22,11 +22,13 @@ class PostService(
     }
 
     suspend fun getPostsForProfile(
+        ownUserId: String,
         userId: String,
         page: Int = 0,
         pageSize: Int = Constants.DEFAULT_POST_PAGE_SIZE
-    ): List<Post> {
+    ): List<PostResponse> {
         return postRepository.getPostsForProfile(
+            ownUserId = ownUserId,
             userId = userId,
             page = page,
             pageSize = pageSize

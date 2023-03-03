@@ -95,13 +95,9 @@ class LikesRepositoryImpl(
     }
 
     override suspend fun getLikesForParent(
-        parentId: String,
-        page: Int,
-        pageSize: Int
+        parentId: String
     ): List<Like> {
         return likes.find(Like::parentId eq parentId)
-            .skip(page * pageSize)
-            .limit(pageSize)
             .descendingSort(Like::timestamp)
             .toList()
     }

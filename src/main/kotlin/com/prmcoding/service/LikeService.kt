@@ -25,14 +25,10 @@ class LikeService(
 
     suspend fun getUsersWhoLikedParent(
         parentId: String,
-        userId: String,
-        page: Int = 0,
-        pageSize: Int = 0
+        userId: String
     ): List<UserResponseItem> {
         val userIds = likeRepository.getLikesForParent(
-            parentId = parentId,
-            page = page,
-            pageSize = pageSize
+            parentId = parentId
         ).map { it.userId }
         val users = userRepository.getUsersByIds(userIds = userIds)
         val followsByUser = followRepository.getFollowsByUser(userId = userId)

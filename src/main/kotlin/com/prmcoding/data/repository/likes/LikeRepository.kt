@@ -11,8 +11,6 @@ interface LikeRepository {
     suspend fun deleteLikesForParent(parentId: String)
 
     suspend fun getLikesForParent(
-        parentId: String,
-        page: Int = 0,
-        pageSize: Int = 0
+        parentId: String
     ): List<Like>
 }

@@ -18,19 +18,9 @@ fun Route.getLikesForParent(
                 call.respond(HttpStatusCode.BadRequest)
                 return@get
             }
-            val page = call.parameters[QueryParameters.PARAM_PAGE]?.toIntOrNull() ?: kotlin.run {
-                call.respond(HttpStatusCode.BadRequest)
-                return@get
-            }
-            val pageSize = call.parameters[QueryParameters.PARAM_PAGE_SIZE]?.toIntOrNull() ?: kotlin.run {
-                call.respond(HttpStatusCode.BadRequest)
-                return@get
-            }
 
             val usersWhoLikedParent = likeService.getUsersWhoLikedParent(
                 parentId = parentId,
-                page = page,
-                pageSize = pageSize,
                 userId = call.userId
             )
             call.respond(
