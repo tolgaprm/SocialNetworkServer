@@ -11,15 +11,14 @@ import io.ktor.server.routing.*
 fun Route.getCommentsForPost(
     commentService: CommentService
 ) {
-    authenticate {
-        get("/api/comment/get") {
-            val postId = call.parameters[QueryParameters.PARAM_POST_ID] ?: kotlin.run {
-                call.respond(HttpStatusCode.BadRequest)
-                return@get
-            }
-
-            val comments = commentService.getCommentsForPost(postId = postId)
-            call.respond(status = HttpStatusCode.OK, message = comments)
+    get("/api/comment/get") {
+        val postId = call.parameters[QueryParameters.PARAM_POST_ID] ?: kotlin.run {
+            call.respond(HttpStatusCode.BadRequest)
+            return@get
         }
+
+        val comments = commentService.getCommentsForPost(postId = postId)
+        call.respond(status = HttpStatusCode.OK, message = comments)
     }
+
 }
