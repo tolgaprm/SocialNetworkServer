@@ -9,6 +9,8 @@ import com.prmcoding.data.repository.follow.FollowRepository
 import com.prmcoding.data.repository.follow.FollowRepositoryImpl
 import com.prmcoding.data.repository.likes.LikeRepository
 import com.prmcoding.data.repository.likes.LikesRepositoryImpl
+import com.prmcoding.data.repository.message.ChatRepository
+import com.prmcoding.data.repository.message.ChatRepositoryImpl
 import com.prmcoding.data.repository.post.PostRepository
 import com.prmcoding.data.repository.post.PostRepositoryImpl
 import com.prmcoding.data.repository.skill.SkillRepository
@@ -16,6 +18,8 @@ import com.prmcoding.data.repository.skill.SkillRepositoryImpl
 import com.prmcoding.data.repository.user.UserRepository
 import com.prmcoding.data.repository.user.UserRepositoryImpl
 import com.prmcoding.service.*
+import com.prmcoding.service.chat.ChatController
+import com.prmcoding.service.chat.ChatService
 import com.prmcoding.util.Constants.DATABASE_NAME
 import org.koin.dsl.module
 import org.litote.kmongo.coroutine.coroutine
@@ -54,6 +58,9 @@ val mainModule = module {
     single<SkillRepository> {
         SkillRepositoryImpl(get())
     }
+    single<ChatRepository> {
+        ChatRepositoryImpl(get())
+    }
 
     single { UserService(get(), get()) }
     single { FollowService(get()) }
@@ -62,4 +69,6 @@ val mainModule = module {
     single { CommentService(get(), get()) }
     single { ActivityService(get(), get(), get()) }
     single { SkillService(get()) }
+    single { ChatService(get()) }
+    single { ChatController(get()) }
 }

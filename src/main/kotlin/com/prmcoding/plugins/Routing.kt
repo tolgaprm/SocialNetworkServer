@@ -1,6 +1,9 @@
 package com.prmcoding.plugins
 
 import com.prmcoding.routes.activity.getActivities
+import com.prmcoding.routes.chat.chatWebSocket
+import com.prmcoding.routes.chat.getChatsForUser
+import com.prmcoding.routes.chat.getMessagesForChat
 import com.prmcoding.routes.comment.createComment
 import com.prmcoding.routes.comment.deleteComment
 import com.prmcoding.routes.comment.getCommentsForPost
@@ -13,9 +16,14 @@ import com.prmcoding.routes.post.*
 import com.prmcoding.routes.skill.getSkills
 import com.prmcoding.routes.user.*
 import com.prmcoding.service.*
+import com.prmcoding.service.chat.ChatController
+import com.prmcoding.service.chat.ChatService
+import com.prmcoding.service.chat.ChatSession
 import io.ktor.server.application.*
+import io.ktor.server.application.ApplicationCallPipeline.ApplicationPhase.Plugins
 import io.ktor.server.http.content.*
 import io.ktor.server.routing.*
+import io.ktor.server.sessions.*
 import org.koin.ktor.ext.inject
 
 fun Application.configureRouting() {
@@ -26,6 +34,8 @@ fun Application.configureRouting() {
     val commentService: CommentService by inject()
     val activityService: ActivityService by inject()
     val skillsService: SkillService by inject()
+    val chatService: ChatService by inject()
+    val chatController: ChatController by inject()
 
     val jwtIssuer = environment.config.property("jwt.domain").getString()
     val jwtAudience = environment.config.property("jwt.audience").getString()
@@ -75,6 +85,11 @@ fun Application.configureRouting() {
 
         // Activity Routes
         getActivities(activityService = activityService)
+
+        // Chat Routes
+        getChatsForUser(chatService = chatService)
+        getMessagesForChat(chatService = chatService)
+        chatWebSocket(chatController = chatController)
 
         static {
             resources("static")

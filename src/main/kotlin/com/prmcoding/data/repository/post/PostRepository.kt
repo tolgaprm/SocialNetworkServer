@@ -2,7 +2,7 @@ package com.prmcoding.data.repository.post
 
 import com.prmcoding.data.models.Post
 import com.prmcoding.responses.PostResponse
-import com.prmcoding.util.Constants.DEFAULT_POST_PAGE_SIZE
+import com.prmcoding.util.Constants.DEFAULT_PAGE_SIZE
 
 interface PostRepository {
 
@@ -13,14 +13,14 @@ interface PostRepository {
     suspend fun getPostsByFollows(
         ownUserId: String,
         page: Int = 0,
-        pageSize: Int = DEFAULT_POST_PAGE_SIZE
+        pageSize: Int = DEFAULT_PAGE_SIZE
     ): List<PostResponse>
 
     suspend fun getPostsForProfile(
         ownUserId: String,
         userId: String,
         page: Int = 0,
-        pageSize: Int = DEFAULT_POST_PAGE_SIZE
+        pageSize: Int = DEFAULT_PAGE_SIZE
     ): List<PostResponse>
 
     suspend fun getPost(postId: String): Post?

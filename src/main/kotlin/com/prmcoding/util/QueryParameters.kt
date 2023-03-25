@@ -2,6 +2,7 @@ package com.prmcoding.util
 
 object QueryParameters {
 
+    const val PARAM_CHAT_ID ="chatId"
     const val PARAM_PARENT_ID = "parentId"
     const val PARAM_PARENT_TYPE = "parentType"
     const val PARAM_PAGE = "page"
