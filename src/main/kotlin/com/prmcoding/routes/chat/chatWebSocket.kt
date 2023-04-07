@@ -1,6 +1,6 @@
 package com.prmcoding.routes.chat
 
-import com.prmcoding.data.websocket.WSMessage
+import com.prmcoding.data.websocket.WSServerMessage
 import com.prmcoding.service.chat.ChatController
 import com.prmcoding.service.chat.ChatSession
 import com.prmcoding.util.WebSocketObject
@@ -41,6 +41,7 @@ fun Route.chatWebSocket(
                                 webSocketSession = this,
                                 session = session,
                                 chatController = chatController,
+                                frameText = frameText,
                                 type = type,
                                 json = json
                             )
@@ -62,13 +63,14 @@ suspend fun handleWebSocket(
     webSocketSession: WebSocketSession,
     session: ChatSession,
     chatController: ChatController,
+    frameText: String,
     type: Int,
     json: String
 ) {
     when (type) {
         WebSocketObject.MESSAGE.ordinal -> {
-            val message = Json.decodeFromString<WSMessage>(json)
-            chatController.sendMessage(json = json, message = message)
+            val message = Json.decodeFromString<WSServerMessage>(json)
+            chatController.sendMessage(frameText = frameText, message = message)
         }
     }
 }

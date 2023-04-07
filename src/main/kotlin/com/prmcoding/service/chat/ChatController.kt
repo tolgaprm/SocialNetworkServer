@@ -1,9 +1,8 @@
 package com.prmcoding.service.chat
 
-import com.prmcoding.data.repository.message.ChatRepository
-import com.prmcoding.data.websocket.WSMessage
+import com.prmcoding.data.repository.chat.ChatRepository
+import com.prmcoding.data.websocket.WSServerMessage
 import io.ktor.websocket.*
-import kotlinx.serialization.json.Json
 import java.util.concurrent.ConcurrentHashMap
 
 class ChatController(
@@ -21,9 +20,9 @@ class ChatController(
         }
     }
 
-    suspend fun sendMessage(json: String, message: WSMessage) {
-        onlineUsers[message.fromId]?.send(Frame.Text(json))
-        onlineUsers[message.toId]?.send(Frame.Text(json))
+    suspend fun sendMessage(frameText: String, message: WSServerMessage) {
+        onlineUsers[message.fromId]?.send(Frame.Text(frameText))
+        onlineUsers[message.toId]?.send(Frame.Text(frameText))
 
         val messageEntity = message.toMessage()
         repository.insertMessage(messageEntity)

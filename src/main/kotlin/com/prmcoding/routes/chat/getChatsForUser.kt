@@ -12,6 +12,7 @@ fun Route.getChatsForUser(chatService: ChatService) {
     authenticate {
         get("/api/chats") {
             val chats = chatService.getChatsForUser(ownUserId = call.userId)
+
             call.respond(
                 status = HttpStatusCode.OK,
                 message = chats

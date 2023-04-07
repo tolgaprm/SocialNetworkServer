@@ -9,8 +9,8 @@ import com.prmcoding.data.repository.follow.FollowRepository
 import com.prmcoding.data.repository.follow.FollowRepositoryImpl
 import com.prmcoding.data.repository.likes.LikeRepository
 import com.prmcoding.data.repository.likes.LikesRepositoryImpl
-import com.prmcoding.data.repository.message.ChatRepository
-import com.prmcoding.data.repository.message.ChatRepositoryImpl
+import com.prmcoding.data.repository.chat.ChatRepository
+import com.prmcoding.data.repository.chat.ChatRepositoryImpl
 import com.prmcoding.data.repository.post.PostRepository
 import com.prmcoding.data.repository.post.PostRepositoryImpl
 import com.prmcoding.data.repository.skill.SkillRepository

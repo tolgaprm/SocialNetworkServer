@@ -1,7 +1,8 @@
-package com.prmcoding.data.repository.message
+package com.prmcoding.data.repository.chat
 
 import com.prmcoding.data.models.Chat
 import com.prmcoding.data.models.Message
+import com.prmcoding.responses.ChatDto
 
 interface ChatRepository {
 
@@ -11,7 +12,7 @@ interface ChatRepository {
         pageSize: Int
     ): List<Message>
 
-    suspend fun getChatsForUsers(ownUserId: String): List<Chat>
+    suspend fun getChatsForUsers(ownUserId: String): List<ChatDto>
 
     suspend fun doesChatBelongToUser(
         chatId: String,

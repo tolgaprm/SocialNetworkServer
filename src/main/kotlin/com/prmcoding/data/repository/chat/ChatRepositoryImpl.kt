@@ -1,13 +1,12 @@
-package com.prmcoding.data.repository.message
+package com.prmcoding.data.repository.chat
 
 import com.prmcoding.data.models.Chat
 import com.prmcoding.data.models.Message
 import com.prmcoding.data.models.SimpleUser
 import com.prmcoding.data.models.User
-import kotlinx.coroutines.delay
+import com.prmcoding.responses.ChatDto
 import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.CoroutineDatabase
-import org.litote.kmongo.coroutine.insertOne
 
 class ChatRepositoryImpl(
     private val db: CoroutineDatabase
@@ -28,16 +27,23 @@ class ChatRepositoryImpl(
             .toList()
     }
 
-    override suspend fun getChatsForUsers(ownUserId: String): List<Chat> {
-        val user = users.findOneById(ownUserId) ?: return emptyList()
-        val simpleUser = SimpleUser(
-            userId = user.id,
-            profileImageUrl = user.profileImageUrl,
-            username = user.username
-        )
+    override suspend fun getChatsForUsers(ownUserId: String): List<ChatDto> {
         return chats.find(Chat::userIds contains ownUserId)
             .descendingSort(Chat::timestamp)
             .toList()
+            .map { chat ->
+                val otherUserId = chat.userIds.find { it != ownUserId }
+                val user = users.findOneById(otherUserId ?: "")
+                val message = messages.findOneById(chat.lastMessageId)
+                ChatDto(
+                    chatId = chat.id,
+                    remoteUserId = user?.id,
+                    remoteUsername = user?.username,
+                    remoteUserProfileUrl = user?.profileImageUrl,
+                    lastMessage = message?.text,
+                    timestamp = message?.timestamp
+                )
+            }
     }
 
     override suspend fun doesChatBelongToUser(chatId: String, userId: String): Boolean {

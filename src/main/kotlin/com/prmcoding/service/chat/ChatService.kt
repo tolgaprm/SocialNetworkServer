@@ -2,7 +2,8 @@ package com.prmcoding.service.chat
 
 import com.prmcoding.data.models.Chat
 import com.prmcoding.data.models.Message
-import com.prmcoding.data.repository.message.ChatRepository
+import com.prmcoding.data.repository.chat.ChatRepository
+import com.prmcoding.responses.ChatDto
 
 class ChatService(
     private val chatRepository: ChatRepository
@@ -28,7 +29,7 @@ class ChatService(
         )
     }
 
-    suspend fun getChatsForUser(ownUserId: String): List<Chat> {
+    suspend fun getChatsForUser(ownUserId: String): List<ChatDto> {
         return chatRepository.getChatsForUsers(ownUserId = ownUserId)
     }
 }
