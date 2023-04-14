@@ -2,11 +2,13 @@ package com.prmcoding.data.repository.chat
 
 import com.prmcoding.data.models.Chat
 import com.prmcoding.data.models.Message
-import com.prmcoding.data.models.SimpleUser
 import com.prmcoding.data.models.User
 import com.prmcoding.responses.ChatDto
-import org.litote.kmongo.*
+import org.litote.kmongo.and
+import org.litote.kmongo.contains
 import org.litote.kmongo.coroutine.CoroutineDatabase
+import org.litote.kmongo.eq
+import org.litote.kmongo.setValue
 
 class ChatRepositoryImpl(
     private val db: CoroutineDatabase
@@ -23,7 +25,7 @@ class ChatRepositoryImpl(
         return messages.find(Message::chatId eq chatId)
             .skip(page * pageSize)
             .limit(pageSize)
-            .descendingSort(Message::timestamp)
+            .ascendingSort(Message::timestamp)
             .toList()
     }
 
