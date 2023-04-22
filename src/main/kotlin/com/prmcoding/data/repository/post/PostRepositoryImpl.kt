@@ -9,6 +9,7 @@ import org.litote.kmongo.and
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
 import org.litote.kmongo.`in`
+import org.litote.kmongo.inc
 
 class PostRepositoryImpl(
     db: CoroutineDatabase
@@ -20,10 +21,23 @@ class PostRepositoryImpl(
     private val users = db.getCollection<User>()
 
     override suspend fun createPost(post: Post): Boolean {
-        return posts.insertOne(post).wasAcknowledged()
+        return posts.insertOne(post).wasAcknowledged().also { wasAcknowledged ->
+            if (wasAcknowledged) {
+                users.updateOneById(
+                    post.userId,
+                    inc(User::postCount, 1)
+                )
+            }
+        }
     }
 
     override suspend fun deletePost(postId: String) {
+        posts.findOneById(postId)?.also {
+            users.updateOneById(
+                it.userId,
+                inc(User::postCount, -1)
+            )
+        }
         posts.deleteOneById(postId)
     }
 
@@ -60,7 +74,8 @@ class PostRepositoryImpl(
                     description = post.description,
                     likeCount = post.likeCount,
                     commentCount = post.commentCount,
-                    isLiked = isLiked
+                    isLiked = isLiked,
+                    isOwnPost = ownUserId == post.userId
                 )
             }
     }
@@ -94,7 +109,8 @@ class PostRepositoryImpl(
                     description = post.description,
                     likeCount = post.likeCount,
                     commentCount = post.commentCount,
-                    isLiked = isLiked
+                    isLiked = isLiked,
+                    isOwnPost = ownUserId == post.userId
                 )
             }
     }
@@ -116,7 +132,8 @@ class PostRepositoryImpl(
             likeCount = post.likeCount,
             commentCount = post.commentCount,
             isLiked = isLiked,
-            userId = user.id
+            userId = user.id,
+            isOwnPost = userId == post.userId
         )
     }
 }
